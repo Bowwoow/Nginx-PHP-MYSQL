@@ -8,4 +8,4 @@ cp -r ./dirs/root/* /root
 
 mkdir /home/docker/
 
-cp docker-composer.yml /home/docker
+cp docker-compose.yml /home/docker
