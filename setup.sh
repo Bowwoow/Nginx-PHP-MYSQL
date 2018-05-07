@@ -2,4 +2,4 @@
 
 #sudo groupadd nossh
 
-cp -R ./etc /etc
+cp -R ./dirs/etc /etc
