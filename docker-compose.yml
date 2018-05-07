@@ -1,0 +1,102 @@
+-version: '3'
+ -
+ -services:
+ -  nginx-proxy:
+ -    image: jwilder/nginx-proxy:alpine
+ -    restart: always
+ -    container_name: nginx-proxy
+ -    ports:
+ -      - "80:80"
+ -      - "443:443"
+ -    volumes:
+ -      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+ -      - "/etc/nginx/certs:/etc/nginx/certs:ro"
+ -      - "/etc/nginx/conf.d:/etc/nginx/conf.d"
+ -      - "/etc/nginx/site-avaible/:/etc/nginx/site-avaible/"
+ -      - "/var/log/nginx/:/var/log/nginx/"
+ -      - "/etc/nginx/vhost.d:/etc/nginx/vhost.d"
+ -      - "/var/www:/var/www:ro"
+ -    links:
+ -      - php
+ -
+ -  mysql:
+ -    image: mysql:5.7.22
+ -    container_name: mysql
+ -    restart: always
+ -    environment:
+ -      MYSQL_ROOT_PASSWORD: PASSWORD
+ -    volumes:
+ -      - "/var/lib/mysql:/var/lib/mysql"
+ -      
+ -  phpmyadmin:
+ -    image: phpmyadmin/phpmyadmin
+ -    container_name: phpmyadmin
+ -    restart: always
+ -    environment:
+ -      - PMA_HOST=mysql
+ -      - PMA_PORT=3306
+ -      - VIRTUAL_HOST=phpmyadmin.DOMAIN.COM
+ -      - VIRTUAL_PORT=80
+ -      
+ -  php:
+ -    image: php:7-fpm-alpine3.7
+ -    container_name: php
+ -    restart: always
+ -    volumes:
+ -      - "/etc/php:/usr/local/etc/php/conf.d:ro"
+ -      - "/var/www:/var/www"
+ -    expose:
+ -      - "9000"
+ -    environment:
+ -      - VIRTUAL_PORT=9000
+ -      
+ -
+ -## Postgres Database
+ -#
+ -#  postgres:
+ -#    image: postgres:alpine
+ -#    restart: always
+ -#    environment:
+ -#      - "POSTGRES_USER=USER"
+ -#      - "POSTGRES_PASSWORD=PASSWORD"
+ -#      - "POSTGRES_DB=DATABASE"
+ -#    volumes:
+ -#      - "/var/lib/postgresql/data:/var/lib/postgresql/data"
+ -#
+ -#  pgadmin:
+ -#    image: dpage/pgadmin4
+ -#    container_name: pgadmin
+ -#    environment:
+ -#      - VIRTUAL_HOST=pgadmin.DOMAIN.COM
+ -#      - VIRTUAL_PORT=80
+ -#      - PGADMIN_DEFAULT_EMAIL=ROOT@DOMAIN.COM.ru
+ -#      - PGADMIN_DEFAULT_PASSWORD=PASSWORD
+ -#    volumes:
+ -#       - "/var/www/pgadmin:/root/.pgadmin"
+ -#    restart: always
+ -#
+ -###
+ -#####     
+ -#######   
+ -######### 
+ -#######   
+ -#####     
+ -###
+ -#
+ -## Мониторинг контейнеров, так себе...    
+ -#  cadvisor:
+ -#    image: google/cadvisor:latest
+ -#    restart: always
+ -#    volumes:
+ -#      - "/:/rootfs:ro"
+ -#      - "/var/run:/var/run:rw"
+ -#      - "/sys:/sys:ro"
+ -#      - "/var/lib/docker/:/var/lib/docker:ro"
+ -#      - "/dev/disk/:/dev/disk:ro"
+ -#    expose:
+ -#      - "8080"
+ -#    environment:
+ -#      - VIRTUAL_HOST=cadvisor.DOMAIN.COM
+ -#      - VIRTUAL_PORT=8080
+ -    
+ -       
