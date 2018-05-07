@@ -11,3 +11,5 @@ mkdir /home/docker/
 mkdir /var/www/
 
 cp docker-compose.yml /home/docker
+
+rm -R ../setup
