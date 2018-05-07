@@ -7,7 +7,7 @@ while true; do
     echo "SSH access? Y/N: \c "
     read yn
     case $yn in
-        [Yy]* ) break;;
+        [Yy]* ) group=$username; break;;
         [Nn]* ) group=nossh; break;;
         * ) echo "Please answer yes or no.";;
     esac
